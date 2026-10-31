@@ -1,0 +1,166 @@
+{
+  "entities": {
+    "Destination": {
+      "title": "Destination",
+      "description": "Travel destination profile and visitor guides",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 100 },
+        "slug": { "type": "string", "maxLength": 100 },
+        "region": { "type": "string", "maxLength": 50 },
+        "shortDescription": { "type": "string", "maxLength": 500 },
+        "fullOverview": { "type": "string", "maxLength": 5000 },
+        "heroImage": { "type": "string", "maxLength": 1000 },
+        "bestTimeToVisit": { "type": "string", "maxLength": 200 },
+        "suggestedDuration": { "type": "string", "maxLength": 100 },
+        "published": { "type": "boolean" },
+        "featured": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "slug", "region", "published"]
+    },
+    "TourPackage": {
+      "title": "TourPackage",
+      "description": "Curated adventure, trekking, and road trip packages",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 150 },
+        "slug": { "type": "string", "maxLength": 150 },
+        "destinationId": { "type": "string", "maxLength": 128 },
+        "destinationName": { "type": "string", "maxLength": 100 },
+        "shortDescription": { "type": "string", "maxLength": 500 },
+        "durationDays": { "type": "integer" },
+        "durationNights": { "type": "integer" },
+        "pricePerPerson": { "type": "integer" },
+        "currency": { "type": "string", "maxLength": 10 },
+        "travelStyle": { "type": "string", "maxLength": 50 },
+        "tripType": { "type": "string", "maxLength": 20 },
+        "published": { "type": "boolean" },
+        "featured": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "slug", "destinationId", "durationDays", "pricePerPerson", "published"]
+    },
+    "Inquiry": {
+      "title": "Inquiry",
+      "description": "Customer trip inquiry and quote request",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "inquiryType": { "type": "string", "maxLength": 50 },
+        "customerName": { "type": "string", "maxLength": 100 },
+        "phone": { "type": "string", "maxLength": 25 },
+        "email": { "type": "string", "maxLength": 120 },
+        "destination": { "type": "string", "maxLength": 100 },
+        "packageId": { "type": "string", "maxLength": 128 },
+        "travelDate": { "type": "string", "maxLength": 50 },
+        "status": { "type": "string", "enum": ["new", "contacted", "booked", "archived"] },
+        "requirements": { "type": "string", "maxLength": 2000 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["customerName", "phone", "email", "destination", "status"]
+    },
+    "BlogPost": {
+      "title": "BlogPost",
+      "description": "Travel advice, trekking guides, and stories",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 200 },
+        "slug": { "type": "string", "maxLength": 200 },
+        "excerpt": { "type": "string", "maxLength": 500 },
+        "content": { "type": "string", "maxLength": 25000 },
+        "coverImage": { "type": "string", "maxLength": 1000 },
+        "category": { "type": "string", "maxLength": 50 },
+        "published": { "type": "boolean" },
+        "publishedAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["title", "slug", "content", "published"]
+    },
+    "Testimonial": {
+      "title": "Testimonial",
+      "description": "Customer experience and verified reviews",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "customerName": { "type": "string", "maxLength": 100 },
+        "location": { "type": "string", "maxLength": 100 },
+        "tripName": { "type": "string", "maxLength": 150 },
+        "rating": { "type": "integer" },
+        "review": { "type": "string", "maxLength": 1000 },
+        "isDemoSample": { "type": "boolean" },
+        "createdAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["customerName", "review", "rating"]
+    },
+    "SiteSettings": {
+      "title": "SiteSettings",
+      "description": "Global website configuration, WhatsApp contact, and notices",
+      "type": "object",
+      "properties": {
+        "whatsappNumber": { "type": "string", "maxLength": 20 },
+        "contactPhone": { "type": "string", "maxLength": 30 },
+        "contactEmail": { "type": "string", "maxLength": 100 },
+        "address": { "type": "string", "maxLength": 200 },
+        "operationalNotice": { "type": "string", "maxLength": 500 }
+      },
+      "required": ["whatsappNumber", "contactEmail"]
+    },
+    "AdminUser": {
+      "title": "AdminUser",
+      "description": "User account with role-based access control and dashboard module permissions",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "maxLength": 120 },
+        "role": { "type": "string", "enum": ["super_admin", "admin", "manager", "editor", "custom"] },
+        "status": { "type": "string", "enum": ["active", "suspended"] },
+        "isPrimarySuperAdmin": { "type": "boolean" },
+        "allowedModules": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "canDeleteContent": { "type": "boolean" },
+        "canPublishContent": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "lastLoginAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "email", "role", "status", "allowedModules"]
+    }
+  },
+  "firestore": {
+    "/destinations/{destinationId}": {
+      "schema": "Destination",
+      "description": "Public destination discovery documents"
+    },
+    "/packages/{packageId}": {
+      "schema": "TourPackage",
+      "description": "Tour packages, itineraries, and rates"
+    },
+    "/inquiries/{inquiryId}": {
+      "schema": "Inquiry",
+      "description": "Private customer trip inquiries and WhatsApp handoffs"
+    },
+    "/blogPosts/{postId}": {
+      "schema": "BlogPost",
+      "description": "Published travel blog articles"
+    },
+    "/testimonials/{testimonialId}": {
+      "schema": "Testimonial",
+      "description": "Customer stories and reviews"
+    },
+    "/settings/global": {
+      "schema": "SiteSettings",
+      "description": "Official business contact and social channels"
+    },
+    "/users/{userId}": {
+      "schema": "AdminUser",
+      "description": "Admin and team user profiles with role-based permissions"
+    }
+  }
+}

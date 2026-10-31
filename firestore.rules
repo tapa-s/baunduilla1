@@ -1,0 +1,87 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Default Deny All
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isSuperAdmin() {
+      return isSignedIn() && 
+        (request.auth.token.email == 'tapabratadeysarkar961@gmail.com' || 
+         request.auth.token.email == 'contact.baunduilla@gmail.com' || 
+         request.auth.token.email == 'baunduilla@gmail.com') && 
+        request.auth.token.email_verified == true;
+    }
+
+    function isAdmin() {
+      return isSuperAdmin() || (
+        isSignedIn() && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.status == 'active'
+      );
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Destinations: Public can read published destinations. Admin has full control.
+    match /destinations/{destinationId} {
+      allow read: if resource.data.published == true || isAdmin();
+      allow create, update, delete: if isAdmin() && isValidId(destinationId);
+    }
+
+    // Packages: Public can read published packages. Admin has full control.
+    match /packages/{packageId} {
+      allow read: if resource.data.published == true || isAdmin();
+      allow create, update, delete: if isAdmin() && isValidId(packageId);
+    }
+
+    // Blog Posts: Public can read published articles. Admin has full control.
+    match /blogPosts/{postId} {
+      allow read: if resource.data.published == true || isAdmin();
+      allow create, update, delete: if isAdmin() && isValidId(postId);
+    }
+
+    // Testimonials: Public can read testimonials. Admin has full control.
+    match /testimonials/{testimonialId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin() && isValidId(testimonialId);
+    }
+
+    // Global Settings: Public can read business contact info. Only Admin can update.
+    match /settings/{docId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // Inquiries: Customers can create inquiries. Only Admin can list, read, update, or delete inquiries.
+    match /inquiries/{inquiryId} {
+      allow create: if isValidId(inquiryId) &&
+        request.resource.data.customerName is string &&
+        request.resource.data.customerName.size() >= 2 &&
+        request.resource.data.customerName.size() <= 100 &&
+        request.resource.data.phone is string &&
+        request.resource.data.phone.size() >= 8 &&
+        request.resource.data.phone.size() <= 25 &&
+        request.resource.data.email is string &&
+        request.resource.data.email.size() <= 120 &&
+        request.resource.data.status == 'new';
+        
+      allow get, list, update, delete: if isAdmin();
+    }
+
+    // Users & Access: Super Admin has full management; users can read their own profile
+    match /users/{userId} {
+      allow read: if isSuperAdmin() || (isSignedIn() && request.auth.uid == userId);
+      allow create, update, delete: if isSuperAdmin() && isValidId(userId);
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "Remix Baunduilla - Adventure Travel \u0026 Tour Agency",
+  "description": "Discover unforgettable treks, road trips, and group tours across North Bengal, Dooars, Sikkim, Himachal, Uttarakhand, and Northeast India with Baunduilla.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
