@@ -121,8 +121,8 @@ export const Navbar: React.FC = () => {
           {/* Official Brand Logo */}
           <Link to="/" className="flex items-center group shrink-0 py-0.5" aria-label="Baunduilla Home">
             <img
-              src="/assets/aistudio/20261023_085549_c2e8a7b5.png"
-              alt="Baunduilla"
+              src={settings.logoUrl || "/assets/aistudio/20261023_085549_c2e8a7b5.png"}
+              alt={settings.logoAlt || "Baunduilla"}
               className="h-8 sm:h-9 md:h-10 w-auto object-contain transition-transform group-hover:scale-105"
             />
           </Link>
@@ -214,8 +214,8 @@ export const Navbar: React.FC = () => {
 
               <div className="flex items-center justify-between pb-3 border-b border-stone-100 px-2">
                 <img
-                  src="/assets/aistudio/20261023_085549_c2e8a7b5.png"
-                  alt="Baunduilla"
+                  src={settings.logoUrl || "/assets/aistudio/20261023_085549_c2e8a7b5.png"}
+                  alt={settings.logoAlt || "Baunduilla"}
                   className="h-7 w-auto object-contain"
                 />
                 <span className="text-[10px] uppercase font-bold tracking-wider text-[#E99B54] bg-[#E99B54]/10 px-2.5 py-0.5 rounded-full">

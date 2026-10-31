@@ -35,8 +35,8 @@ export const Footer: React.FC = () => {
             <Link to="/" className="inline-flex items-center group" aria-label="Baunduilla Home">
               <div className="bg-white px-4 py-2 rounded-2xl shadow-lg border border-white/20 transition-transform group-hover:scale-[1.02]">
                 <img
-                  src="/assets/aistudio/20261023_085549_c2e8a7b5.png"
-                  alt="Baunduilla"
+                  src={settings.logoUrl || "/assets/aistudio/20261023_085549_c2e8a7b5.png"}
+                  alt={settings.logoAlt || "Baunduilla"}
                   className="h-9 sm:h-10 w-auto object-contain"
                 />
               </div>

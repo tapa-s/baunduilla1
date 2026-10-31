@@ -30,6 +30,23 @@ export async function compressAndProcessImage(
       return;
     }
 
+    if (file.type === 'image/svg+xml') {
+      const svgReader = new FileReader();
+      svgReader.onload = () => {
+        const dataUrl = svgReader.result as string;
+        resolve({
+          dataUrl,
+          name: file.name,
+          originalSize: file.size,
+          compressedSize: file.size,
+          dimensions: { width: 400, height: 120 }
+        });
+      };
+      svgReader.onerror = () => reject(new Error(`Failed to read SVG file "${file.name}".`));
+      svgReader.readAsDataURL(file);
+      return;
+    }
+
     const reader = new FileReader();
 
     reader.onerror = () => {

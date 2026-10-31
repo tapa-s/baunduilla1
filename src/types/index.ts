@@ -167,6 +167,8 @@ export interface SiteSettings {
   enableLiveBookingNotice: boolean;
 
   // Website Layout, Texts & Details Customization
+  logoUrl?: string; // Official brand logo image (uploaded dataUrl or URL)
+  logoAlt?: string; // Accessible brand name / alt text
   heroBadge?: string;
   heroHeadline?: string;
   heroSubheadline?: string;

@@ -92,7 +92,7 @@ export const AdminPage: React.FC = () => {
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [siteSettings, setSiteSettings] = useState<SiteSettings>(() => StorageService.getSiteSettings());
-  const [settingsSubTab, setSettingsSubTab] = useState<'layout' | 'menu' | 'texts' | 'team' | 'story' | 'details'>('layout');
+  const [settingsSubTab, setSettingsSubTab] = useState<'logo' | 'layout' | 'menu' | 'texts' | 'team' | 'story' | 'details'>('logo');
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>(() => StorageService.getTeamMembers());
   const [editingTeamMember, setEditingTeamMember] = useState<TeamMember | null>(null);
   const [isNewTeamMember, setIsNewTeamMember] = useState(false);
@@ -2438,6 +2438,18 @@ Staying with local families not only provides warm, authentic hospitality and or
           <div className="flex items-center gap-2 p-1 bg-stone-100/80 rounded-2xl border border-stone-200/80 overflow-x-auto text-xs font-bold">
             <button
               type="button"
+              onClick={() => setSettingsSubTab('logo')}
+              className={`px-4 py-2.5 rounded-xl transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer ${
+                settingsSubTab === 'logo'
+                  ? 'bg-white text-[#173F35] shadow-xs font-bold'
+                  : 'text-stone-600 hover:text-stone-900'
+              }`}
+            >
+              <Sparkles className="w-4 h-4 text-[#E99B54]" />
+              <span>Brand Logo & Identity</span>
+            </button>
+            <button
+              type="button"
               onClick={() => setSettingsSubTab('layout')}
               className={`px-4 py-2.5 rounded-xl transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer ${
                 settingsSubTab === 'layout'
@@ -2512,10 +2524,244 @@ Staying with local families not only provides warm, authentic hospitality and or
 
           <form onSubmit={handleSaveSettings} className="space-y-6">
             {/* -------------------------------------------------------- */}
+            {/* SUBTAB 0: OFFICIAL BRAND LOGO & IDENTITY                 */}
+            {/* -------------------------------------------------------- */}
+            {settingsSubTab === 'logo' && (
+              <div className="space-y-6 animate-in fade-in duration-150">
+                {/* Information Header */}
+                <div className="bg-emerald-50/70 border border-emerald-200/90 rounded-2xl p-4 sm:p-5 text-xs text-emerald-950 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex items-start gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-[#173F35] text-white flex items-center justify-center shrink-0 mt-0.5">
+                      <Sparkles className="w-4 h-4 text-[#E99B54]" />
+                    </div>
+                    <div className="space-y-1">
+                      <p className="font-bold text-sm text-[#173F35]">Official Brand Logo Management</p>
+                      <p className="text-emerald-900/80 leading-relaxed max-w-xl">
+                        Upload your agency&apos;s brand logo directly from your device. Once saved, this logo instantly updates across the <strong>Top Navbar Capsule</strong>, the <strong>Mobile Navigation Shutter</strong>, and the <strong>Website Footer</strong>.
+                      </p>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSiteSettings(prev => ({
+                        ...prev,
+                        logoUrl: '/assets/aistudio/20261023_085549_c2e8a7b5.png',
+                        logoAlt: 'Baunduilla'
+                      }));
+                      showToast('Default Baunduilla logo selected. Click "Save Website Settings" below to apply.');
+                    }}
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-800 bg-white hover:bg-emerald-100 border border-emerald-300 px-3.5 py-2 rounded-xl transition-colors cursor-pointer shrink-0 self-start sm:self-auto"
+                  >
+                    <RotateCcw className="w-3.5 h-3.5 text-emerald-700" />
+                    <span>Reset to Default Logo</span>
+                  </button>
+                </div>
+
+                {/* Main Logo Upload Component */}
+                <div className="bg-white rounded-2xl p-5 sm:p-6 border border-stone-200 shadow-xs space-y-6">
+                  <div>
+                    <SingleImageUploader
+                      label="Upload Official Logo (From Phone / PC or Image Link)"
+                      value={siteSettings.logoUrl || '/assets/aistudio/20261023_085549_c2e8a7b5.png'}
+                      onChange={(newUrl) => setSiteSettings(prev => ({ ...prev, logoUrl: newUrl }))}
+                      helperText="Click 'Upload Photo' to pick any image from your computer or phone (PNG with transparent background or SVG looks best). You can also paste an image URL."
+                    />
+                  </div>
+
+                  {/* Logo Alt Text */}
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-1">
+                      Accessible Brand Alt Text (SEO & Accessibility)
+                    </label>
+                    <input
+                      type="text"
+                      value={siteSettings.logoAlt || 'Baunduilla'}
+                      onChange={(e) => setSiteSettings(prev => ({ ...prev, logoAlt: e.target.value }))}
+                      placeholder="e.g. Baunduilla - Travel & Tour Agency"
+                      className="w-full px-4 py-2.5 bg-stone-50 border border-stone-300 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#173F35]/20 focus:border-[#173F35]"
+                    />
+                    <p className="text-[11px] text-stone-400 mt-1">
+                      Screen-reader description and fallback text if the image is still loading.
+                    </p>
+                  </div>
+
+                  {/* Quick Preset Logo Options */}
+                  <div className="pt-2 border-t border-stone-200">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500 block mb-2.5">
+                      Quick Logo Presets
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSiteSettings(prev => ({
+                            ...prev,
+                            logoUrl: '/assets/aistudio/20261023_085549_c2e8a7b5.png',
+                            logoAlt: 'Baunduilla'
+                          }));
+                          showToast('Selected official Baunduilla horizontal emblem logo');
+                        }}
+                        className={`p-3 rounded-xl border text-left flex items-center gap-3 transition-all cursor-pointer ${
+                          (siteSettings.logoUrl || '').includes('20261023_085549')
+                            ? 'border-[#173F35] bg-emerald-50/50 ring-2 ring-[#173F35]/10'
+                            : 'border-stone-200 hover:border-stone-300 bg-stone-50/50'
+                        }`}
+                      >
+                        <div className="w-20 h-10 bg-white rounded-lg border border-stone-200 p-1 flex items-center justify-center shrink-0">
+                          <img
+                            src="/assets/aistudio/20261023_085549_c2e8a7b5.png"
+                            alt="Preset 1"
+                            className="max-h-full max-w-full object-contain"
+                          />
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-stone-800">Official Baunduilla Emblem</p>
+                          <p className="text-[10px] text-stone-500">Curved typography with compass</p>
+                        </div>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSiteSettings(prev => ({
+                            ...prev,
+                            logoUrl: '/logo.png',
+                            logoAlt: 'Baunduilla'
+                          }));
+                          showToast('Selected Baunduilla square emblem');
+                        }}
+                        className={`p-3 rounded-xl border text-left flex items-center gap-3 transition-all cursor-pointer ${
+                          (siteSettings.logoUrl || '') === '/logo.png'
+                            ? 'border-[#173F35] bg-emerald-50/50 ring-2 ring-[#173F35]/10'
+                            : 'border-stone-200 hover:border-stone-300 bg-stone-50/50'
+                        }`}
+                      >
+                        <div className="w-20 h-10 bg-white rounded-lg border border-stone-200 p-1 flex items-center justify-center shrink-0">
+                          <img
+                            src="/logo.png"
+                            alt="Preset 2"
+                            className="max-h-full max-w-full object-contain"
+                          />
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-stone-800">Baunduilla Square Emblem</p>
+                          <p className="text-[10px] text-stone-500">Compact insignia symbol</p>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Real-world Live Dual Previews */}
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-bold text-xs uppercase tracking-wider text-stone-700">
+                        Live Preview on Website
+                      </h4>
+                      <p className="text-[11px] text-stone-500">
+                        Verify how your uploaded logo appears against both light and dark backgrounds on the live site.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    {/* Preview 1: Light Floating Navbar Capsule */}
+                    <div className="bg-stone-100 p-4 rounded-2xl border border-stone-200 space-y-2">
+                      <div className="flex items-center justify-between text-[11px] font-bold text-stone-600">
+                        <span>1. Top Navbar Header (Light Glass Capsule)</span>
+                        <span className="text-emerald-700 font-normal text-[10px]">Active Design</span>
+                      </div>
+
+                      <div className="bg-white/95 backdrop-blur-md rounded-full px-5 py-3 border border-stone-200 shadow-md flex items-center justify-between">
+                        <img
+                          src={siteSettings.logoUrl || '/assets/aistudio/20261023_085549_c2e8a7b5.png'}
+                          alt={siteSettings.logoAlt || 'Baunduilla'}
+                          className="h-8 w-auto object-contain"
+                        />
+
+                        <div className="hidden sm:flex items-center gap-3 text-xs text-stone-500">
+                          <span className="font-semibold text-stone-800">Home</span>
+                          <span>Destinations</span>
+                          <span>Packages</span>
+                          <span>About Us</span>
+                        </div>
+
+                        <div className="text-[11px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full">
+                          Contact
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Preview 2: Dark Pine Green Footer */}
+                    <div className="bg-stone-100 p-4 rounded-2xl border border-stone-200 space-y-2">
+                      <div className="flex items-center justify-between text-[11px] font-bold text-stone-600">
+                        <span>2. Website Footer (Dark Pine Backdrop #173F35)</span>
+                        <span className="text-emerald-700 font-normal text-[10px]">Active Design</span>
+                      </div>
+
+                      <div className="bg-[#173F35] p-5 rounded-2xl border border-[#235A4D] flex items-center justify-between">
+                        <div className="bg-white px-3.5 py-1.5 rounded-xl shadow-md border border-white/20">
+                          <img
+                            src={siteSettings.logoUrl || '/assets/aistudio/20261023_085549_c2e8a7b5.png'}
+                            alt={siteSettings.logoAlt || 'Baunduilla'}
+                            className="h-8 w-auto object-contain"
+                          />
+                        </div>
+
+                        <div className="text-right">
+                          <p className="text-[10px] text-[#E99B54] uppercase tracking-wider font-bold">
+                            Travel Together
+                          </p>
+                          <p className="text-[11px] text-[#F7F5EF]/80">
+                            Discover More
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* -------------------------------------------------------- */}
             {/* SUBTAB 1: LAYOUT & SECTIONS                              */}
             {/* -------------------------------------------------------- */}
             {settingsSubTab === 'layout' && (
               <div className="space-y-6 animate-in fade-in duration-150">
+                {/* Quick Access Card to Brand Logo */}
+                <div className="flex items-center justify-between p-4 rounded-2xl border border-emerald-200 bg-emerald-50/60 hover:bg-emerald-50 transition-colors">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-10 bg-white rounded-xl border border-emerald-200 p-1 flex items-center justify-center shrink-0 shadow-2xs">
+                      <img
+                        src={siteSettings.logoUrl || '/assets/aistudio/20261023_085549_c2e8a7b5.png'}
+                        alt="Current logo"
+                        className="max-h-full max-w-full object-contain"
+                      />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-bold text-stone-900">Official Brand Logo</span>
+                        <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800">Customizable</span>
+                      </div>
+                      <p className="text-xs text-stone-500">
+                        Upload or replace the official agency logo shown in the navbar, mobile menu, and footer.
+                      </p>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setSettingsSubTab('logo')}
+                    className="text-xs font-bold text-[#173F35] bg-white border border-stone-200 hover:bg-stone-100 px-3.5 py-1.5 rounded-xl cursor-pointer shrink-0 transition-colors flex items-center gap-1 shadow-xs"
+                  >
+                    <Sparkles className="w-3.5 h-3.5 text-[#E99B54]" />
+                    <span>Upload Logo →</span>
+                  </button>
+                </div>
+
                 <div className="bg-amber-50/60 border border-amber-200/80 rounded-2xl p-4 text-xs text-amber-900 flex items-start gap-3">
                   <Sparkles className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
                   <div>

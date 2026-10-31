@@ -14,6 +14,8 @@ export const INITIAL_SITE_SETTINGS: SiteSettings = {
   enableLiveBookingNotice: true,
 
   // Website Layout, Texts & Details (Customizable by Devoloper & Super Admin)
+  logoUrl: '/assets/aistudio/20261023_085549_c2e8a7b5.png',
+  logoAlt: 'Baunduilla Travel & Adventure Agency',
   heroBadge: 'Certified Mountain Guides & Forest Safaris',
   heroHeadline: 'Book your adventure journey now!',
   heroSubheadline: 'With Baunduilla, explore wildlife safaris in Dooars, living root bridges in Meghalaya, tea garden retreats, and Himalayan road trips. Just start with where you want to go.',

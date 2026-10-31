@@ -70,7 +70,7 @@ export const SingleImageUploader: React.FC<SingleImageUploaderProps> = ({
         type="file"
         ref={fileInputRef}
         onChange={handleFileChange}
-        accept="image/png,image/jpeg,image/webp,image/avif"
+        accept="image/png,image/jpeg,image/webp,image/avif,image/svg+xml"
         className="hidden"
       />
 
